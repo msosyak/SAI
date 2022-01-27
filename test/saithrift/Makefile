@@ -21,8 +21,8 @@ CDEFS = -DBRCMSAI
 endif
 endif
 endif
-DEPS = switch_sai_constants.h  switch_sai_rpc.h  switch_sai_types.h
-OBJS = switch_sai_constants.o  switch_sai_rpc.o  switch_sai_types.o
+DEPS =  switch_sai_rpc.h  switch_sai_types.h
+OBJS =  switch_sai_rpc.o  switch_sai_types.o
 
 ODIR = ./src/obj
 SAIDIR = ./include
@@ -42,8 +42,6 @@ endif
 SAI_LIBRARY_DIR ?= $(SAI_PREFIX)/lib
 LDFLAGS = -L$(SAI_LIBRARY_DIR) -Wl,-rpath=$(SAI_LIBRARY_DIR)
 CPP_SOURCES = \
-				src/gen-cpp/switch_sai_constants.cpp \
-				src/gen-cpp/switch_sai_constants.h \
 				src/gen-cpp/switch_sai_rpc.cpp \
 				src/gen-cpp/switch_sai_rpc.h \
 				src/gen-cpp/switch_sai_types.cpp \
@@ -89,8 +87,8 @@ $(ODIR)/switch_sai_rpc_server.o: src/switch_sai_rpc_server.cpp
 $(ODIR)/saiserver.o: src/saiserver.cpp
 	$(CXX) $(CFLAGS) -c $^ -o $@ $(CFLAGS) $(CDEFS) -I$(SRC)/gen-cpp -I$(SRC)
 
-$(ODIR)/librpcserver.a: $(ODIR)/switch_sai_rpc.o $(ODIR)/switch_sai_types.o $(ODIR)/switch_sai_constants.o $(ODIR)/switch_sai_rpc_server.o
-	ar rcs $(ODIR)/librpcserver.a $(ODIR)/switch_sai_rpc.o $(ODIR)/switch_sai_types.o $(ODIR)/switch_sai_constants.o $(ODIR)/switch_sai_rpc_server.o
+$(ODIR)/librpcserver.a: $(ODIR)/switch_sai_rpc.o $(ODIR)/switch_sai_types.o $(ODIR)/switch_sai_rpc_server.o
+	ar rcs $(ODIR)/librpcserver.a $(ODIR)/switch_sai_rpc.o $(ODIR)/switch_sai_types.o  $(ODIR)/switch_sai_rpc_server.o
 
 saiserver: $(ODIR)/saiserver.o $(ODIR)/librpcserver.a
 	$(CXX) $(LDFLAGS) $(ODIR)/switch_sai_rpc_server.o $(ODIR)/saiserver.o -o $@ \
